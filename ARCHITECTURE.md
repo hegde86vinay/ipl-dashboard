@@ -1,5 +1,78 @@
 # IPL Dashboard — Architecture Diagrams
 
+## Why a Full-Stack Monolith Over Traditional N-Tier?
+
+A traditional enterprise application splits into distinct tiers — a frontend client, a backend API server (often Spring Boot, Express, or Django), and a database. Each tier is deployed and scaled independently. This is the gold standard for large teams and complex domains, but it comes at a cost: more infrastructure, more configuration, and more moving parts to maintain.
+
+For the IPL Dashboard, we deliberately chose a **single-tier full-stack monolith** using Next.js. Here's why:
+
+### The Nature of the Data
+
+IPL cricket data is **read-only and analytical**. There are no user accounts, no write operations, no transactions, and no business logic that mutates state. The entire workload is: receive a request → query the database → render charts. A dedicated backend tier would be an empty pass-through adding latency with no value.
+
+### Next.js Is Already the Backend
+
+Next.js blurs the traditional boundary between frontend and backend:
+
+- **Server Components** execute on the server and can call the database directly — no API layer needed
+- **API Routes** (`/api/*`) are serverless functions that handle JSON endpoints for client-side interactivity
+- **The Query Layer** (`src/lib/queries/`) is a shared module that both server components and API routes call directly
+
+In a traditional N-tier setup, you'd build a REST API in Express or Spring Boot, deploy it separately, manage CORS, and add network hops. Next.js collapses all of that into a single deployable unit.
+
+### What We Gain
+
+| Benefit | How |
+|---|---|
+| **Zero network hop for server pages** | Server components call the query layer in-process — no HTTP round-trip to a separate backend |
+| **Single deployment** | One `git push` deploys everything to Vercel — no container orchestration, no separate API hosting |
+| **Shared types** | TypeScript interfaces flow from the query layer to components without API contracts or code generation |
+| **Simpler DevEx** | `npm run dev` starts the entire stack — no docker-compose, no multi-service startup |
+| **Lower latency** | Server-rendered pages complete all 11 parallel DB queries and return fully rendered HTML in a single request |
+
+### When Would We Add a Separate Backend?
+
+This architecture would need to evolve if:
+
+- **Write operations** were introduced (user accounts, favorites, predictions) — you'd want a proper API layer with validation, auth middleware, and rate limiting
+- **Multiple frontends** needed the same data (mobile app, public API) — a shared backend API would prevent duplication
+- **Complex business logic** emerged (scoring algorithms, ML predictions) — separating compute from rendering keeps each layer focused
+- **Team scaling** required independent deployment cycles for frontend and backend teams
+
+For a read-only analytics dashboard with a single frontend and ~260K rows of static data, the full-stack monolith is the right trade-off: maximum simplicity with no performance compromise.
+
+### Architecture Comparison
+
+```mermaid
+graph TB
+    subgraph "Traditional N-Tier"
+        A1[React SPA] -->|HTTP/JSON| B1[Express / Spring Boot API]
+        B1 -->|SQL| C1[(PostgreSQL)]
+        style A1 fill:#f59e0b,color:#000
+        style B1 fill:#ef4444,color:#fff
+        style C1 fill:#3b82f6,color:#fff
+    end
+
+    subgraph "IPL Dashboard — Full-Stack Monolith"
+        A2[Server Components] -->|in-process call| B2[Query Layer]
+        A3[Client Components] -->|fetch /api/*| B3[API Routes]
+        B3 -->|in-process call| B2
+        B2 -->|SQL| C2[(Turso DB)]
+        style A2 fill:#10b981,color:#fff
+        style A3 fill:#f59e0b,color:#000
+        style B3 fill:#f59e0b,color:#000
+        style B2 fill:#10b981,color:#fff
+        style C2 fill:#3b82f6,color:#fff
+    end
+
+    D["❌ Extra network hop"] -.-> B1
+    E["✅ No extra hop"] -.-> B2
+```
+
+> **Key insight:** The middle tier in N-tier exists to house business logic and serve as a shared API. When there's no business logic to house and only one consumer, that tier becomes pure overhead.
+
+---
+
 ## 1. High-Level Architecture
 
 ```mermaid
