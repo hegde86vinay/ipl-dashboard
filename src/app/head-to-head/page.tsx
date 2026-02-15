@@ -63,9 +63,9 @@ export default function HeadToHeadPage() {
         <p className="text-muted-foreground mt-1">Compare any two IPL franchises</p>
       </div>
 
-      <div className="flex items-center gap-4 flex-wrap">
+      <div className="flex items-center gap-3 flex-wrap">
         <Select value={team1} onValueChange={setTeam1}>
-          <SelectTrigger className="w-[250px]">
+          <SelectTrigger className="w-full sm:w-[250px]">
             <SelectValue placeholder="Select Team 1" />
           </SelectTrigger>
           <SelectContent>
@@ -77,10 +77,10 @@ export default function HeadToHeadPage() {
           </SelectContent>
         </Select>
 
-        <span className="text-xl font-bold text-muted-foreground">vs</span>
+        <span className="text-xl font-bold text-muted-foreground hidden sm:inline">vs</span>
 
         <Select value={team2} onValueChange={setTeam2}>
-          <SelectTrigger className="w-[250px]">
+          <SelectTrigger className="w-full sm:w-[250px]">
             <SelectValue placeholder="Select Team 2" />
           </SelectTrigger>
           <SelectContent>

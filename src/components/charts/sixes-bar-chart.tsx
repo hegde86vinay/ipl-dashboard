@@ -13,8 +13,8 @@ export function SixesBarChart({ data }: Props) {
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-        <XAxis dataKey="season" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
+        <XAxis dataKey="season" tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
+        <YAxis tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
         <Tooltip
           contentStyle={{
             backgroundColor: "hsl(var(--card))",
@@ -22,6 +22,7 @@ export function SixesBarChart({ data }: Props) {
             borderRadius: "8px",
             color: "hsl(var(--card-foreground))",
           }}
+          labelStyle={{ color: "#e4e4e7" }}
         />
         <Bar dataKey="totalSixes" fill="#f59e0b" radius={[4, 4, 0, 0]} name="Sixes" />
       </BarChart>

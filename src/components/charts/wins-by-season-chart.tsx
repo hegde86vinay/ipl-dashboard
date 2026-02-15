@@ -14,8 +14,8 @@ export function WinsBySeasonChart({ data, color = "#3b82f6" }: Props) {
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-        <XAxis dataKey="season" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} domain={[0, 100]} unit="%" />
+        <XAxis dataKey="season" tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
+        <YAxis tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" domain={[0, 100]} unit="%" />
         <Tooltip
           contentStyle={{
             backgroundColor: "hsl(var(--card))",
@@ -23,6 +23,7 @@ export function WinsBySeasonChart({ data, color = "#3b82f6" }: Props) {
             borderRadius: "8px",
             color: "hsl(var(--card-foreground))",
           }}
+          labelStyle={{ color: "#e4e4e7" }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           formatter={(value: any, name: any) => {
             if (name === "winPct") return [`${value}%`, "Win %"];

@@ -21,7 +21,7 @@ export default async function OverviewPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <StatCard title="Total Matches" value={stats.totalMatches} icon={Calendar} />
         <StatCard title="Total Runs" value={stats.totalRuns} icon={TrendingUp} />
         <StatCard title="Wickets" value={stats.totalWickets} icon={Target} />

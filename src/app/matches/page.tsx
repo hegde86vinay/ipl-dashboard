@@ -98,9 +98,9 @@ export default function MatchesPage() {
         </p>
       </div>
 
-      <div className="flex items-center gap-4 flex-wrap">
+      <div className="flex items-center gap-3 flex-wrap">
         <Select value={season} onValueChange={setSeason}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-[140px]">
             <SelectValue placeholder="Season" />
           </SelectTrigger>
           <SelectContent>
@@ -112,7 +112,7 @@ export default function MatchesPage() {
         </Select>
 
         <Select value={team} onValueChange={setTeam}>
-          <SelectTrigger className="w-[250px]">
+          <SelectTrigger className="w-full sm:w-[250px]">
             <SelectValue placeholder="Team" />
           </SelectTrigger>
           <SelectContent>

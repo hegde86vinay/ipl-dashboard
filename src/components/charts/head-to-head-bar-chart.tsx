@@ -20,12 +20,12 @@ export function HeadToHeadBarChart({ data, teamColor = "#3b82f6" }: Props) {
     <ResponsiveContainer width="100%" height={Math.max(300, data.length * 40)}>
       <BarChart data={data} layout="vertical" margin={{ left: 10 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-        <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+        <XAxis type="number" tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
         <YAxis
           type="category"
           dataKey="opponentShortCode"
-          stroke="hsl(var(--muted-foreground))"
-          fontSize={12}
+          tick={{ fill: "#a1a1aa", fontSize: 12 }}
+          stroke="#52525b"
           width={50}
         />
         <Tooltip
@@ -35,6 +35,7 @@ export function HeadToHeadBarChart({ data, teamColor = "#3b82f6" }: Props) {
             borderRadius: "8px",
             color: "hsl(var(--card-foreground))",
           }}
+          labelStyle={{ color: "#e4e4e7" }}
         />
         <Bar dataKey="won" fill={teamColor} radius={[0, 4, 4, 0]} name="Won" />
         <Bar dataKey="lost" fill="hsl(var(--muted))" radius={[0, 4, 4, 0]} name="Lost" />

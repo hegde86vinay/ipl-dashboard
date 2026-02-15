@@ -13,8 +13,8 @@ export function SeasonRunsAreaChart({ data }: Props) {
     <ResponsiveContainer width="100%" height={300}>
       <AreaChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-        <XAxis dataKey="season" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
+        <XAxis dataKey="season" tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
+        <YAxis tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
         <Tooltip
           contentStyle={{
             backgroundColor: "hsl(var(--card))",
@@ -22,6 +22,7 @@ export function SeasonRunsAreaChart({ data }: Props) {
             borderRadius: "8px",
             color: "hsl(var(--card-foreground))",
           }}
+          labelStyle={{ color: "#e4e4e7" }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           formatter={(value: any) => [Number(value).toLocaleString(), "Total Runs"]}
         />

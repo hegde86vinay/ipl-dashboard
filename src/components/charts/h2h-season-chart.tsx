@@ -17,8 +17,8 @@ export function H2HSeasonChart({ data, team1Label, team2Label, team1Color, team2
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-        <XAxis dataKey="season" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} allowDecimals={false} />
+        <XAxis dataKey="season" tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
+        <YAxis tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" allowDecimals={false} />
         <Tooltip
           contentStyle={{
             backgroundColor: "hsl(var(--card))",
@@ -26,8 +26,9 @@ export function H2HSeasonChart({ data, team1Label, team2Label, team1Color, team2
             borderRadius: "8px",
             color: "hsl(var(--card-foreground))",
           }}
+          labelStyle={{ color: "#e4e4e7" }}
         />
-        <Legend />
+        <Legend wrapperStyle={{ color: "#a1a1aa" }} />
         <Bar dataKey="team1Wins" fill={team1Color} radius={[4, 4, 0, 0]} name={team1Label} />
         <Bar dataKey="team2Wins" fill={team2Color} radius={[4, 4, 0, 0]} name={team2Label} />
       </BarChart>

@@ -19,12 +19,12 @@ export function VenuePerformanceChart({ data, color = "#3b82f6" }: Props) {
     <ResponsiveContainer width="100%" height={Math.max(300, data.length * 40)}>
       <BarChart data={chartData} layout="vertical" margin={{ left: 20 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-        <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} domain={[0, 100]} unit="%" />
+        <XAxis type="number" tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" domain={[0, 100]} unit="%" />
         <YAxis
           type="category"
           dataKey="shortVenue"
-          stroke="hsl(var(--muted-foreground))"
-          fontSize={11}
+          tick={{ fill: "#a1a1aa", fontSize: 11 }}
+          stroke="#52525b"
           width={130}
         />
         <Tooltip
@@ -34,6 +34,7 @@ export function VenuePerformanceChart({ data, color = "#3b82f6" }: Props) {
             borderRadius: "8px",
             color: "hsl(var(--card-foreground))",
           }}
+          labelStyle={{ color: "#e4e4e7" }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           formatter={(value: any, name: any) => {
             if (name === "winPct") return [`${value}%`, "Win %"];

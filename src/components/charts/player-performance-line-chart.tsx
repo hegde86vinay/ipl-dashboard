@@ -13,9 +13,9 @@ export function PlayerPerformanceLineChart({ data }: Props) {
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-        <XAxis dataKey="season" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-        <YAxis yAxisId="left" stroke="#3b82f6" fontSize={12} />
-        <YAxis yAxisId="right" orientation="right" stroke="#10b981" fontSize={12} />
+        <XAxis dataKey="season" tick={{ fill: "#a1a1aa", fontSize: 12 }} stroke="#52525b" />
+        <YAxis yAxisId="left" tick={{ fill: "#60a5fa", fontSize: 12 }} stroke="#3b82f6" />
+        <YAxis yAxisId="right" orientation="right" tick={{ fill: "#34d399", fontSize: 12 }} stroke="#10b981" />
         <Tooltip
           contentStyle={{
             backgroundColor: "hsl(var(--card))",
@@ -23,8 +23,9 @@ export function PlayerPerformanceLineChart({ data }: Props) {
             borderRadius: "8px",
             color: "hsl(var(--card-foreground))",
           }}
+          labelStyle={{ color: "#e4e4e7" }}
         />
-        <Legend />
+        <Legend wrapperStyle={{ color: "#a1a1aa" }} />
         <Line
           yAxisId="left"
           type="monotone"
