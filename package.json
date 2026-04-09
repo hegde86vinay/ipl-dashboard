@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint src/ components/ app/ lib/ --ext .ts,.tsx",
+    "lint:fix": "eslint src/ components/ app/ lib/ --ext .ts,.tsx --fix",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@libsql/client": "^0.17.0",

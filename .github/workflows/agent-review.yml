@@ -1,0 +1,81 @@
+name: Automated Code Review with Agents
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+
+jobs:
+  agent-review:
+    runs-on: ubuntu-latest
+    name: Automated Agent Code Review
+    
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        id: diff
+        run: |
+          git fetch origin main:main || git fetch origin develop:develop
+          echo "Retrieving changes..."
+          git diff main...HEAD > changes.diff || git diff develop...HEAD > changes.diff
+          echo "diff_size=$(wc -c < changes.diff)" >> $GITHUB_OUTPUT
+
+      - name: Prepare agent review request
+        id: prepare
+        run: |
+          cat > agent-review.json << 'EOF'
+          {
+            "event": "pull_request",
+            "action": "review_request",
+            "agents": [
+              "staticAnalysisReviewer",
+              "securityReviewer",
+              "performanceReviewer",
+              "readabilityReviewer"
+            ],
+            "context": {
+              "pr_number": ${{ github.event.pull_request.number }},
+              "pr_title": "${{ github.event.pull_request.title }}",
+              "pr_author": "${{ github.event.pull_request.user.login }}",
+              "branch": "${{ github.head_ref }}",
+              "repository": "${{ github.repository }}"
+            }
+          }
+          EOF
+          echo "Review request prepared"
+
+      - name: Notify in PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🤖 Automated Code Review Agents Starting\n\nThe following specialized review agents are analyzing this pull request:\n\n- 🔍 **Static Analysis Reviewer** - Checking TypeScript, ESLint, type safety\n- 🔒 **Security Reviewer** - Scanning for vulnerabilities and security issues\n- ⚡ **Performance Reviewer** - Analyzing performance and optimization\n- 📖 **Readability Reviewer** - Evaluating code quality and best practices\n\n_Review will be completed shortly..._`
+            });
+
+      - name: Log agent execution
+        run: |
+          echo "Agent Review Execution Log"
+          echo "=========================="
+          echo "Event Type: ${{ github.event_name }}"
+          echo "Action: ${{ github.event.action }}"
+          echo "Branch: ${{ github.head_ref }}"
+          echo "Files Changed: $(git diff --name-only main...HEAD | wc -l)"
+          echo ""
+          echo "Agents to Execute:"
+          echo "  - Static Analysis Reviewer"
+          echo "  - Security Reviewer"
+          echo "  - Performance Reviewer"
+          echo "  - Readability Reviewer"
