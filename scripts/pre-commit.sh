@@ -12,11 +12,10 @@ STAGED_FILES=$(git diff --cached --name-only --diff-filter=d | grep -E '\.(ts|ts
 
 if [ -z "$STAGED_FILES" ]; then
   echo "ℹ️  No TypeScript/JavaScript files to check"
-  exit 0
+else
+  echo "📝 Files to check:"
+  echo "$STAGED_FILES" | sed 's/^/  - /'
 fi
-
-echo "📝 Files to check:"
-echo "$STAGED_FILES" | sed 's/^/  - /'
 
 # Run ESLint on staged files
 echo ""
@@ -35,6 +34,16 @@ if npm run typecheck; then
   echo "✅ TypeScript check passed"
 else
   echo "❌ TypeScript check failed"
+  exit 1
+fi
+
+# Validate agent configuration
+echo ""
+echo "🤖 Validating agent configuration..."
+if npm run validate:agents; then
+  echo "✅ Agent validation passed"
+else
+  echo "❌ Agent validation failed"
   exit 1
 fi
 
